@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>💖</title>
+  <style>
+    body{
+      margin:0; height:100vh; overflow:hidden;
+      display:flex; align-items:center; justify-content:center;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background: radial-gradient(circle at top, #ffd1e8, #ff5aa5);
+      color:white; text-align:center;
+    }
+    h1{ font-size: clamp(40px, 7vw, 84px); margin:0 0 10px; }
+    p{ font-size: clamp(16px, 2.5vw, 22px); margin:0; opacity:.95; }
+    .heart{
+      position:absolute; bottom:-40px;
+      font-size: 24px;
+      animation: floatUp linear forwards;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,.25));
+      user-select:none;
+    }
+    @keyframes floatUp{
+      from { transform: translateY(0) translateX(0) scale(1); opacity: 1; }
+      to   { transform: translateY(-110vh) translateX(var(--drift)) scale(1.6); opacity: 0; }
+    }
+    .glow{ text-shadow: 0 0 12px rgba(255,255,255,.7), 0 0 28px rgba(255,255,255,.35); }
+    .tap{
+      position:absolute; bottom:18px; left:0; right:0;
+      font-size: 14px; opacity: .85;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <h1 class="glow">I love you ❤️</h1>
+    <p>You make my world better.</p>
+  </div>
+  <div class="tap">Tap anywhere for more hearts ✨</div>
+
+  <script>
+    const hearts = ["❤️","💖","💘","💝","💕","💗"];
+    function spawnHeart(x=null){
+      const el = document.createElement("div");
+      el.className = "heart";
+      el.textContent = hearts[Math.floor(Math.random()*hearts.length)];
+
+      const startX = x ?? Math.random() * window.innerWidth;
+      el.style.left = `${startX}px`;
+
+      const dur = 3 + Math.random() * 3;           // 3–6s
+      el.style.animationDuration = `${dur}s`;
+      el.style.setProperty("--drift", `${(Math.random()*200 - 100).toFixed(0)}px`);
+
+      el.style.fontSize = `${18 + Math.random()*28}px`;
+      document.body.appendChild(el);
+
+      el.addEventListener("animationend", () => el.remove());
+    }
+
+    // Gentle auto-hearts
+    const timer = setInterval(() => spawnHeart(), 200);
+
+    // Tap/click = burst
+    window.addEventListener("pointerdown", (e) => {
+      for(let i=0;i<18;i++) spawnHeart(e.clientX + (Math.random()*120-60));
+    });
+
+    // If you want it to stop after a while, uncomment:
+    // setTimeout(() => clearInterval(timer), 20000);
+  </script>
+</body>
+</html>
