@@ -58,14 +58,39 @@
 
       el.addEventListener("animationend", () => el.remove());
     }
+function popSticker(x,y){
+  const img = document.createElement("img");
+  img.src = "assets/sticker_29.webp";
+  img.style.position = "absolute";
+  img.style.left = (x - 45) + "px";
+  img.style.top  = (y - 45) + "px";
+  img.style.width = (70 + Math.random()*60) + "px";
+  img.style.zIndex = 6;
+  img.style.pointerEvents = "none";
+  img.style.filter = "drop-shadow(0 10px 18px rgba(0,0,0,.25))";
+
+  img.animate(
+    [
+      { transform: "scale(.3) rotate(-12deg)", opacity: 0 },
+      { transform: "scale(1.1) rotate(10deg)", opacity: 1, offset: 0.35 },
+      { transform: "scale(1) rotate(0deg)", opacity: 1 }
+    ],
+    { duration: 650, easing: "cubic-bezier(.2,.9,.2,1)" }
+  );
+
+  document.body.appendChild(img);
+  setTimeout(() => img.remove(), 2200);
+}
 
     // Gentle auto-hearts
     const timer = setInterval(() => spawnHeart(), 200);
 
     // Tap/click = burst
-    window.addEventListener("pointerdown", (e) => {
-      for(let i=0;i<18;i++) spawnHeart(e.clientX + (Math.random()*120-60));
-    });
+ window.addEventListener("pointerdown", (e) => {
+  for(let i=0;i<18;i++) spawnHeart(e.clientX + (Math.random()*120-60));
+  popSticker(e.clientX, e.clientY);
+});
+
 
     // If you want it to stop after a while, uncomment:
     // setTimeout(() => clearInterval(timer), 20000);
