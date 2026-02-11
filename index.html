@@ -6,90 +6,133 @@
   <title>💖</title>
   <style>
     body{
-      margin:0; height:100vh; overflow:hidden;
-      display:flex; align-items:center; justify-content:center;
+      margin:0;
+      min-height:100vh;
+      overflow:hidden;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
       background: radial-gradient(circle at top, #ffd1e8, #ff5aa5);
-      color:white; text-align:center;
+      color:white;
+      text-align:center;
+      position: relative;
     }
+
+    /* Centered content container */
+    .wrap{
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 28px 16px 70px; /* space for the tap hint */
+      box-sizing: border-box;
+    }
+    .card{
+      width: min(620px, 92vw);
+    }
+
     h1{ font-size: clamp(40px, 7vw, 84px); margin:0 0 10px; }
     p{ font-size: clamp(16px, 2.5vw, 22px); margin:0; opacity:.95; }
+
     .heart{
       position:absolute; bottom:-40px;
       font-size: 24px;
       animation: floatUp linear forwards;
       filter: drop-shadow(0 6px 10px rgba(0,0,0,.25));
       user-select:none;
+      z-index: 1;
+      pointer-events: none;
     }
     @keyframes floatUp{
       from { transform: translateY(0) translateX(0) scale(1); opacity: 1; }
       to   { transform: translateY(-110vh) translateX(var(--drift)) scale(1.6); opacity: 0; }
     }
-    .glow{ text-shadow: 0 0 12px rgba(255,255,255,.7), 0 0 28px rgba(255,255,255,.35); }
+
+    .glow{
+      text-shadow: 0 0 12px rgba(255,255,255,.7), 0 0 28px rgba(255,255,255,.35);
+    }
+
     .tap{
       position:absolute; bottom:18px; left:0; right:0;
       font-size: 14px; opacity: .85;
+      z-index: 3;
+      pointer-events: none;
     }
+
     .reply{
-  margin-top: 18px;
-  width: min(520px, 88vw);
-  background: rgba(255,255,255,.16);
-  border: 1px solid rgba(255,255,255,.25);
-  border-radius: 18px;
-  padding: 14px;
-  backdrop-filter: blur(6px);
-}
-.reply h2{
-  margin:0 0 10px;
-  font-size: 18px;
-  font-weight: 800;
-}
-.reply textarea{
-  width: 100%;
-  height: 92px;
-  border-radius: 14px;
-  border: 0;
-  padding: 12px;
-  font-size: 16px;
-  resize: none;
-  outline: none;
-}
-.reply button{
-  margin-top: 10px;
-  width: 100%;
-  border: 0;
-  border-radius: 14px;
-  padding: 12px 14px;
-  font-size: 16px;
-  font-weight: 800;
-  cursor: pointer;
-}
-.hint{
-  margin-top: 8px;
-  font-size: 13px;
-  opacity: .9;
-}
+      margin-top: 18px;
+      width: min(520px, 88vw);
+      margin-left: auto;
+      margin-right: auto;
+      background: rgba(255,255,255,.16);
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 18px;
+      padding: 14px;
+      backdrop-filter: blur(6px);
+      box-sizing: border-box;
+    }
+    .reply h2{
+      margin:0 0 10px;
+      font-size: 18px;
+      font-weight: 800;
+    }
+    .reply textarea{
+      width: 100%;
+      height: 92px;
+      border-radius: 14px;
+      border: 0;
+      padding: 12px;
+      font-size: 16px;
+      resize: none;
+      outline: none;
+      box-sizing: border-box;
+    }
+    .reply button{
+      margin-top: 10px;
+      width: 100%;
+      border: 0;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      background: rgba(255,255,255,.9);
+    }
+    .reply button:active{
+      transform: scale(0.99);
+    }
+    .hint{
+      margin-top: 8px;
+      font-size: 13px;
+      opacity: .9;
+      min-height: 18px;
+    }
   </style>
 </head>
-<body>
-  <div>
-    <h1 class="glow">I love you NAHOUD ❤️</h1>
-    <p>You make my world better.</p>
-    <div class="reply">
-  <h2>Write me back 💌</h2>
-  <form id="replyForm">
-    <textarea id="msg" name="message" placeholder="Type your message here..."></textarea>
-    <button type="submit">Send</button>
-    <div id="status" class="hint"></div>
-  </form>
-</div>
 
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1 class="glow">I love you NAHOUD ❤️</h1>
+      <p>You make my world better.</p>
+
+      <div class="reply">
+        <h2>Write me back 💌</h2>
+        <form id="replyForm">
+          <textarea id="msg" name="message" placeholder="Type your message here..."></textarea>
+          <button type="submit">Send</button>
+          <div id="status" class="hint"></div>
+        </form>
+      </div>
+    </div>
   </div>
+
   <div class="tap">Tap anywhere for more hearts ✨</div>
 
   <script>
-    
-    const hearts = ["❤️","🍆","💖","💘","🍆","💝","💕","🍆","💗"];
+   
+    const hearts = ["❤️","🍆","💖","💘","💝","💕","🍆","💗"];
+
     function spawnHeart(x=null){
       const el = document.createElement("div");
       el.className = "heart";
@@ -98,84 +141,87 @@
       const startX = x ?? Math.random() * window.innerWidth;
       el.style.left = `${startX}px`;
 
-      const dur = 3 + Math.random() * 3;           // 3–6s
+      const dur = 3 + Math.random() * 3; // 3–6s
       el.style.animationDuration = `${dur}s`;
       el.style.setProperty("--drift", `${(Math.random()*200 - 100).toFixed(0)}px`);
-
       el.style.fontSize = `${18 + Math.random()*28}px`;
-      document.body.appendChild(el);
 
+      document.body.appendChild(el);
       el.addEventListener("animationend", () => el.remove());
     }
-function popSticker(x,y){
-  const img = document.createElement("img");
-  img.src = "assets/sticker_29.webp";
-  img.style.position = "absolute";
-  img.style.left = (x - 45) + "px";
-  img.style.top  = (y - 45) + "px";
-  img.style.width = (70 + Math.random()*60) + "px";
-  img.style.zIndex = 6;
-  img.style.pointerEvents = "none";
-  img.style.filter = "drop-shadow(0 10px 18px rgba(0,0,0,.25))";
 
-  img.animate(
-    [
-      { transform: "scale(.3) rotate(-12deg)", opacity: 0 },
-      { transform: "scale(1.1) rotate(10deg)", opacity: 1, offset: 0.35 },
-      { transform: "scale(1) rotate(0deg)", opacity: 1 }
-    ],
-    { duration: 650, easing: "cubic-bezier(.2,.9,.2,1)" }
-  );
+    function popSticker(x,y){
+      const img = document.createElement("img");
+      img.src = "assets/sticker_29.webp";
+      img.style.position = "absolute";
+      img.style.left = (x - 45) + "px";
+      img.style.top  = (y - 45) + "px";
+      img.style.width = (70 + Math.random()*60) + "px";
+      img.style.zIndex = 2;
+      img.style.pointerEvents = "none";
+      img.style.filter = "drop-shadow(0 10px 18px rgba(0,0,0,.25))";
 
-  document.body.appendChild(img);
-  setTimeout(() => img.remove(), 2200);
-}
+      img.animate(
+        [
+          { transform: "scale(.3) rotate(-12deg)", opacity: 0 },
+          { transform: "scale(1.1) rotate(10deg)", opacity: 1, offset: 0.35 },
+          { transform: "scale(1) rotate(0deg)", opacity: 1 }
+        ],
+        { duration: 650, easing: "cubic-bezier(.2,.9,.2,1)" }
+      );
 
-    
-    const timer = setInterval(() => spawnHeart(), 200);
+      document.body.appendChild(img);
+      setTimeout(() => img.remove(), 2200);
+    }
 
-    
- window.addEventListener("pointerdown", (e) => {
-  for(let i=0;i<18;i++) spawnHeart(e.clientX + (Math.random()*120-60));
-  popSticker(e.clientX, e.clientY);
-});
-const FORMSPREE_URL = "https://formspree.io/f/xzdadjrl";
+    // Gentle auto-hearts
+    const timer = setInterval(() => spawnHeart(), 220);
 
-document.getElementById("replyForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
+    // Tap = burst (but don't trigger when tapping inside the form/textarea/button)
+    window.addEventListener("pointerdown", (e) => {
+      const insideReply = e.target.closest && e.target.closest(".reply");
+      if (insideReply) return;
 
-  const status = document.getElementById("status");
-  const message = document.getElementById("msg").value.trim();
-
-  if (!message) {
-    alert("Write something first 😊");
-    return;
-  }
-
-  status.textContent = "Sending… 💫";
-
-  try {
-    const res = await fetch(FORMSPREE_URL, {
-      method: "POST",
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ message })
+      for(let i=0;i<18;i++) spawnHeart(e.clientX + (Math.random()*120-60));
+      popSticker(e.clientX, e.clientY);
     });
 
-    if (res.ok) {
-      status.textContent = "Sent ✅ I received it 💖";
-      document.getElementById("msg").value = "";
-    } else {
-      status.textContent = "Not sent 😕 Try again.";
-    }
-  } catch (err) {
-    status.textContent = "Network issue 📶 Try again later.";
-  }
-});
+    // Formspree send
+    const FORMSPREE_URL = "https://formspree.io/f/xzdadjrl";
 
+    document.getElementById("replyForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
 
+      const status = document.getElementById("status");
+      const message = document.getElementById("msg").value.trim();
+
+      if (!message) {
+        alert("Write something first 😊");
+        return;
+      }
+
+      status.textContent = "Sending… 💫";
+
+      try {
+        const res = await fetch(FORMSPREE_URL, {
+          method: "POST",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ message })
+        });
+
+        if (res.ok) {
+          status.textContent = "Sent ✅ I received it 💖";
+          document.getElementById("msg").value = "";
+        } else {
+          status.textContent = "Not sent 😕 Try again.";
+        }
+      } catch (err) {
+        status.textContent = "Network issue 📶 Try again later.";
+      }
+    });
   </script>
 </body>
 </html>
