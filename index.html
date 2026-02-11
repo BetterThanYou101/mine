@@ -178,13 +178,15 @@
     const timer = setInterval(() => spawnHeart(), 220);
 
     // Tap = burst (but don't trigger when tapping inside the form/textarea/button)
-    window.addEventListener("pointerdown", (e) => {
-      const insideReply = e.target.closest && e.target.closest(".reply");
-      if (insideReply) return;
+   window.addEventListener("pointerdown", (e) => {
+  // If the tap/click happened inside the reply box (textarea or send button), do nothing
+  if (e.target.closest(".reply")) return;
 
-      for(let i=0;i<18;i++) spawnHeart(e.clientX + (Math.random()*120-60));
-      popSticker(e.clientX, e.clientY);
-    });
+  for (let i = 0; i < 18; i++) {
+    spawnHeart(e.clientX + (Math.random() * 120 - 60));
+  }
+  popSticker(e.clientX, e.clientY);
+});
 
     // Formspree send
     const FORMSPREE_URL = "https://formspree.io/f/xzdadjrl";
