@@ -82,18 +82,16 @@ function popSticker(x,y){
   setTimeout(() => img.remove(), 2200);
 }
 
-    // Gentle auto-hearts
+    
     const timer = setInterval(() => spawnHeart(), 200);
 
-    // Tap/click = burst
+    
  window.addEventListener("pointerdown", (e) => {
   for(let i=0;i<18;i++) spawnHeart(e.clientX + (Math.random()*120-60));
   popSticker(e.clientX, e.clientY);
 });
 
 
-    // If you want it to stop after a while, uncomment:
-    // setTimeout(() => clearInterval(timer), 20000);
   </script>
 </body>
 </html>
