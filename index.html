@@ -30,16 +30,65 @@
       position:absolute; bottom:18px; left:0; right:0;
       font-size: 14px; opacity: .85;
     }
+    .reply{
+  margin-top: 18px;
+  width: min(520px, 88vw);
+  background: rgba(255,255,255,.16);
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 18px;
+  padding: 14px;
+  backdrop-filter: blur(6px);
+}
+.reply h2{
+  margin:0 0 10px;
+  font-size: 18px;
+  font-weight: 800;
+}
+.reply textarea{
+  width: 100%;
+  height: 92px;
+  border-radius: 14px;
+  border: 0;
+  padding: 12px;
+  font-size: 16px;
+  resize: none;
+  outline: none;
+}
+.reply button{
+  margin-top: 10px;
+  width: 100%;
+  border: 0;
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.hint{
+  margin-top: 8px;
+  font-size: 13px;
+  opacity: .9;
+}
   </style>
 </head>
 <body>
   <div>
     <h1 class="glow">I love you NAHOUD ❤️</h1>
     <p>You make my world better.</p>
+    <div class="reply">
+  <h2>Write me back 💌</h2>
+  <form id="replyForm">
+    <textarea id="msg" name="message" placeholder="Type your message here..."></textarea>
+    <button type="submit">Send</button>
+    <div id="status" class="hint"></div>
+  </form>
+</div>
+
   </div>
   <div class="tap">Tap anywhere for more hearts ✨</div>
 
   <script>
+    
     const hearts = ["❤️","🍆","💖","💘","🍆","💝","💕","🍆","💗"];
     function spawnHeart(x=null){
       const el = document.createElement("div");
@@ -89,6 +138,41 @@ function popSticker(x,y){
  window.addEventListener("pointerdown", (e) => {
   for(let i=0;i<18;i++) spawnHeart(e.clientX + (Math.random()*120-60));
   popSticker(e.clientX, e.clientY);
+});
+const FORMSPREE_URL = "https://formspree.io/f/xzdadjrl";
+
+document.getElementById("replyForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const status = document.getElementById("status");
+  const message = document.getElementById("msg").value.trim();
+
+  if (!message) {
+    alert("Write something first 😊");
+    return;
+  }
+
+  status.textContent = "Sending… 💫";
+
+  try {
+    const res = await fetch(FORMSPREE_URL, {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ message })
+    });
+
+    if (res.ok) {
+      status.textContent = "Sent ✅ I received it 💖";
+      document.getElementById("msg").value = "";
+    } else {
+      status.textContent = "Not sent 😕 Try again.";
+    }
+  } catch (err) {
+    status.textContent = "Network issue 📶 Try again later.";
+  }
 });
 
 
