@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Girl</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000; /* Dark background for glowing effect */
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            position: relative;
+        }
+
+        .background-hearts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .glowing-heart {
+            position: absolute;
+            font-size: 50px;
+            animation: glow 2s ease-in-out infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor; }
+            50% { text-shadow: 0 0 20px currentColor, 0 0 30px currentColor, 0 0 40px currentColor; }
+        }
+
+        .text {
+            font-size: 2em;
+            text-align: center;
+            z-index: 3;
+            color: #ff69b4; /* Hot pink */
+            margin-bottom: 20px;
+        }
+
+        .gif-container {
+            display: flex;
+            justify-content: space-around;
+            width: 80%;
+            z-index: 3;
+        }
+
+        .shaped {
+            width: 200px;
+            height: 200px;
+            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 50% 75%, 18% 100%, 0% 38%);
+            object-fit: cover;
+            border: 2px solid #fff;
+            box-shadow: 0 0 20px #ff69b4;
+        }
+
+        .falling-hearts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .falling-heart {
+            position: absolute;
+            font-size: 30px;
+            animation: fall linear infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100%);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-hearts"></div>
+    <div class="falling-hearts"></div>
+    <div class="text">
+        A7777 Nchdeek Nme7nek, Nfezgek O Nla7sso liik ta tssekhfi
+    </div>
+    <div class="gif-container">
+        <img src="assets/gif1.gif" class="shaped" alt="GIF 1">
+        <img src="assets/gif2.gif" class="shaped" alt="GIF 2">
+        <img src="assets/gif3.gif" class="shaped" alt="GIF 3">
+    </div>
+
+    <script>
+        // Generate glowing hearts in background
+        const colors = ['#ff0000', '#ff69b4', '#ffffff']; // red, pink, white
+        const backgroundHearts = document.querySelector('.background-hearts');
+        for (let i = 0; i < 20; i++) { // 20 glowing hearts
+            const heart = document.createElement('div');
+            heart.classList.add('glowing-heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = `${Math.random() * 100}%`;
+            heart.style.top = `${Math.random() * 100}%`;
+            heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+            heart.style.animationDelay = `${Math.random() * 2}s`;
+            backgroundHearts.appendChild(heart);
+        }
+
+        // Generate falling hearts
+        const fallingHeartsContainer = document.querySelector('.falling-hearts');
+        for (let i = 0; i < 50; i++) { // 50 falling hearts
+            const heart = document.createElement('div');
+            heart.classList.add('falling-heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = `${Math.random() * 100}%`;
+            heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+            heart.style.animationDuration = `${Math.random() * 5 + 5}s`; // 5-10s
+            heart.style.animationDelay = `${Math.random() * 5}s`;
+            fallingHeartsContainer.appendChild(heart);
+        }
+    </script>
+</body>
+</html>
