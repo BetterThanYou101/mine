@@ -57,14 +57,15 @@
             z-index: 3;
         }
 
-        .shaped {
-            width: 200px;
-            height: 200px;
-            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 50% 75%, 18% 100%, 0% 38%);
-            object-fit: cover;
-            border: 2px solid #fff;
-            box-shadow: 0 0 20px #ff69b4;
-        }
+     .shaped {
+  width: 240px;
+  height: 170px;
+  border-radius: 18px;      /* rounded rectangle */
+  clip-path: none;          /* remove shape */
+  object-fit: cover;
+  border: 2px solid #fff;
+  box-shadow: 0 0 20px #ff69b4;
+}
 
         .falling-hearts {
             position: absolute;
@@ -99,7 +100,7 @@
     <div class="background-hearts"></div>
     <div class="falling-hearts"></div>
     <div class="text">
-        A7777 Nchdeek Nme7nek, Nfezgek O Nla7sso liik ta tssekhfi
+        A7777 Nchdeek Nme7nek, Nfezgek O Nla7sso liik ta tssekhfi 🍆 🍑
     </div>
     <div class="gif-container">
         <img src="assets/gif1.gif" class="shaped" alt="GIF 1">
@@ -127,7 +128,7 @@
         for (let i = 0; i < 50; i++) { // 50 falling hearts
             const heart = document.createElement('div');
             heart.classList.add('falling-heart');
-            heart.innerHTML = '❤️';
+            heart.innerHTML = '❤️','🍆';
             heart.style.left = `${Math.random() * 100}%`;
             heart.style.color = colors[Math.floor(Math.random() * colors.length)];
             heart.style.animationDuration = `${Math.random() * 5 + 5}s`; // 5-10s
